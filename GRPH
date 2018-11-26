@@ -1,0 +1,22 @@
+def read_fasta(fp):
+    name, seq = None, []
+    for line in fp:
+        line = line.rstrip()
+        if line.startswith(">"):
+            if name: yield (name, ''.join(seq))
+            name, seq = line, []
+        else:
+            seq.append(line)
+    if name: yield (name, ''.join(seq))
+
+with open('rosalind.txt') as fp:
+    d = {}
+    for name, seq in read_fasta(fp):
+        d[name] = seq
+
+
+for i in d.keys():
+    for j in d.keys():
+        if i != j:
+            if d[i][-3:] == d[j][:3]:
+                print(i[1:]+ " " + j[1:])
